@@ -1639,6 +1639,102 @@ typedef struct SBP_ATTR_PACKED {
 } msg_protection_level_t;
 
 
+/** Inertial Navigation System status message
+ *
+ * The INS status message describes the state of the operation
+ * and initialization of the inertial navigation system.
+ */
+#define SBP_MSG_INS_STATUS            0xFF03
+#define SBP_INS_STATUS_INS_TYPE_MASK (0x7)
+#define SBP_INS_STATUS_INS_TYPE_SHIFT (29u)
+#define SBP_INS_STATUS_INS_TYPE_GET(flags) \
+                             (((flags) >> SBP_INS_STATUS_INS_TYPE_SHIFT) \
+                             & SBP_INS_STATUS_INS_TYPE_MASK)
+#define SBP_INS_STATUS_INS_TYPE_SET(flags, val) \
+                             do {((flags) |= \
+                             (((val) & (SBP_INS_STATUS_INS_TYPE_MASK)) \
+                             << (SBP_INS_STATUS_INS_TYPE_SHIFT)));} while(0)
+
+
+#define SBP_INS_STATUS_INS_TYPE_SMOOTHPOSE_LOOSELY_COUPLED (0)
+#define SBP_INS_STATUS_INS_TYPE_OTHER_LOOSELY_COUPLED (1)
+#define SBP_INS_STATUS_ODOMETRY_SYNCH_MASK (0x1)
+#define SBP_INS_STATUS_ODOMETRY_SYNCH_SHIFT (10u)
+#define SBP_INS_STATUS_ODOMETRY_SYNCH_GET(flags) \
+                             (((flags) >> SBP_INS_STATUS_ODOMETRY_SYNCH_SHIFT) \
+                             & SBP_INS_STATUS_ODOMETRY_SYNCH_MASK)
+#define SBP_INS_STATUS_ODOMETRY_SYNCH_SET(flags, val) \
+                             do {((flags) |= \
+                             (((val) & (SBP_INS_STATUS_ODOMETRY_SYNCH_MASK)) \
+                             << (SBP_INS_STATUS_ODOMETRY_SYNCH_SHIFT)));} while(0)
+
+
+#define SBP_INS_STATUS_ODOMETRY_SYNCH_ODOMETRY_TIMESTAMP_NOMINAL (0)
+#define SBP_INS_STATUS_ODOMETRY_SYNCH_ODOMETRY_TIMESTAMP_OUT_OF_BOUNDS (1)
+#define SBP_INS_STATUS_ODOMETRY_STATUS_MASK (0x3)
+#define SBP_INS_STATUS_ODOMETRY_STATUS_SHIFT (8u)
+#define SBP_INS_STATUS_ODOMETRY_STATUS_GET(flags) \
+                             (((flags) >> SBP_INS_STATUS_ODOMETRY_STATUS_SHIFT) \
+                             & SBP_INS_STATUS_ODOMETRY_STATUS_MASK)
+#define SBP_INS_STATUS_ODOMETRY_STATUS_SET(flags, val) \
+                             do {((flags) |= \
+                             (((val) & (SBP_INS_STATUS_ODOMETRY_STATUS_MASK)) \
+                             << (SBP_INS_STATUS_ODOMETRY_STATUS_SHIFT)));} while(0)
+
+
+#define SBP_INS_STATUS_ODOMETRY_STATUS_NO_ODOMETRY (0)
+#define SBP_INS_STATUS_ODOMETRY_STATUS_ODOMETRY_RECEIVED_WITHIN_LAST_SECOND (1)
+#define SBP_INS_STATUS_ODOMETRY_STATUS_ODOMETRY_NOT_RECEIVED_WITHIN_LAST_SECOND (2)
+#define SBP_INS_STATUS_INS_ERROR_MASK (0xf)
+#define SBP_INS_STATUS_INS_ERROR_SHIFT (4u)
+#define SBP_INS_STATUS_INS_ERROR_GET(flags) \
+                             (((flags) >> SBP_INS_STATUS_INS_ERROR_SHIFT) \
+                             & SBP_INS_STATUS_INS_ERROR_MASK)
+#define SBP_INS_STATUS_INS_ERROR_SET(flags, val) \
+                             do {((flags) |= \
+                             (((val) & (SBP_INS_STATUS_INS_ERROR_MASK)) \
+                             << (SBP_INS_STATUS_INS_ERROR_SHIFT)));} while(0)
+
+
+#define SBP_INS_STATUS_INS_ERROR_IMU_DATA_ERROR (1)
+#define SBP_INS_STATUS_INS_ERROR_INS_LICENSE_ERROR (2)
+#define SBP_INS_STATUS_INS_ERROR_IMU_CALIBRATION_DATA_ERROR (3)
+#define SBP_INS_STATUS_GNSS_FIX_MASK (0x1)
+#define SBP_INS_STATUS_GNSS_FIX_SHIFT (3u)
+#define SBP_INS_STATUS_GNSS_FIX_GET(flags) \
+                             (((flags) >> SBP_INS_STATUS_GNSS_FIX_SHIFT) \
+                             & SBP_INS_STATUS_GNSS_FIX_MASK)
+#define SBP_INS_STATUS_GNSS_FIX_SET(flags, val) \
+                             do {((flags) |= \
+                             (((val) & (SBP_INS_STATUS_GNSS_FIX_MASK)) \
+                             << (SBP_INS_STATUS_GNSS_FIX_SHIFT)));} while(0)
+
+
+#define SBP_INS_STATUS_GNSS_FIX_NO_GNSS_FIX_AVAILABLE (0)
+#define SBP_INS_STATUS_GNSS_FIX_GNSS_FIX (1)
+#define SBP_INS_STATUS_MODE_MASK (0x7)
+#define SBP_INS_STATUS_MODE_SHIFT (0u)
+#define SBP_INS_STATUS_MODE_GET(flags) \
+                             (((flags) >> SBP_INS_STATUS_MODE_SHIFT) \
+                             & SBP_INS_STATUS_MODE_MASK)
+#define SBP_INS_STATUS_MODE_SET(flags, val) \
+                             do {((flags) |= \
+                             (((val) & (SBP_INS_STATUS_MODE_MASK)) \
+                             << (SBP_INS_STATUS_MODE_SHIFT)));} while(0)
+
+
+#define SBP_INS_STATUS_MODE_AWAITING_INITIALIZATION (0)
+#define SBP_INS_STATUS_MODE_DYNAMICALLY_ALIGNING (1)
+#define SBP_INS_STATUS_MODE_READY (2)
+#define SBP_INS_STATUS_MODE_GNSS_OUTAGE_EXCEEDS_MAX_DURATION (3)
+#define SBP_INS_STATUS_MODE_FASTSTART_SEEDING (4)
+#define SBP_INS_STATUS_MODE_FASTSTART_VALIDATING (5)
+
+typedef struct SBP_ATTR_PACKED {
+  u32 flags;    /**< Status flags */
+} msg_ins_status_t;
+
+
 /** \} */
 
 SBP_PACK_END
