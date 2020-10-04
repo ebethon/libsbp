@@ -72,36 +72,6 @@ typedef struct SBP_ATTR_PACKED {
 } msg_startup_t;
 
 
-/** Status of received corrections
- *
- * This message provides information about the receipt of Differential
- * corrections.  It is expected to be sent with each receipt of a complete
- * corrections packet.
- */
-#define SBP_MSG_DGNSS_STATUS          0xFF02
-#define SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_MASK (0xf)
-#define SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_SHIFT (0u)
-#define SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_GET(flags) \
-                             (((flags) >> SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_SHIFT) \
-                             & SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_MASK)
-#define SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_SET(flags, val) \
-                             do {((flags) |= \
-                             (((val) & (SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_MASK)) \
-                             << (SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_SHIFT)));} while(0)
-                             
-
-#define SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_INVALID (0)
-#define SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_CODE_DIFFERENCE (1)
-#define SBP_DGNSS_STATUS_DIFFERENTIAL_TYPE_RTK (2)
-
-typedef struct SBP_ATTR_PACKED {
-  u8 flags;          /**< Status flags */
-  u16 latency;        /**< Latency of observation receipt [deci-seconds] */
-  u8 num_signals;    /**< Number of signals from base station */
-  char source[0];      /**< Corrections source string */
-} msg_dgnss_status_t;
-
-
 /** System heartbeat message
  *
  * The heartbeat message is sent periodically to inform the host
@@ -305,34 +275,6 @@ typedef struct SBP_ATTR_PACKED {
 } msg_ins_status_t;
 
 
-/** Experimental telemetry message
- *
- * The CSAC telemetry message has an implementation defined telemetry string
- * from a device. It is not produced or available on general Swift Products.
- * It is intended to be a low rate message for status purposes.
- */
-#define SBP_MSG_CSAC_TELEMETRY        0xFF04
-
-typedef struct SBP_ATTR_PACKED {
-  u8 id;           /**< Index representing the type of telemetry in use.  It is implemention defined. */
-  char telemetry[0]; /**< Comma separated list of values as defined by the index */
-} msg_csac_telemetry_t;
-
-
-/** Experimental telemetry message labels
- *
- * The CSAC telemetry message provides labels for each member of the string
- * produced by MSG_CSAC_TELEMETRY. It should be provided by a device at a lower
- * rate than the MSG_CSAC_TELEMETRY.
- */
-#define SBP_MSG_CSAC_TELEMETRY_LABELS 0xFF05
-
-typedef struct SBP_ATTR_PACKED {
-  u8 id;                  /**< Index representing the type of telemetry in use.  It is implemention defined. */
-  char telemetry_labels[0]; /**< Comma separated list of telemetry field values */
-} msg_csac_telemetry_labels_t;
-
-
 /** Inertial Navigation System update status message
  *
  * The INS update status message contains informations about executed and rejected INS updates.
@@ -497,37 +439,6 @@ typedef struct SBP_ATTR_PACKED {
   s16 microseconds;    /**< Microseconds portion of the time offset [microseconds] */
   u8 flags;           /**< Status flags (reserved) */
 } msg_gnss_time_offset_t;
-
-
-/** Solution Group Metadata
- *
- * This leading message lists the time metadata of the Solution Group.
- * It also lists the atomic contents (i.e. types of messages included) of the Solution Group.
- */
-#define SBP_MSG_GROUP_META            0xFF0A
-#define SBP_GROUP_META_SOLUTION_GROUP_TYPE_MASK (0x3)
-#define SBP_GROUP_META_SOLUTION_GROUP_TYPE_SHIFT (0u)
-#define SBP_GROUP_META_SOLUTION_GROUP_TYPE_GET(flags) \
-                             (((flags) >> SBP_GROUP_META_SOLUTION_GROUP_TYPE_SHIFT) \
-                             & SBP_GROUP_META_SOLUTION_GROUP_TYPE_MASK)
-#define SBP_GROUP_META_SOLUTION_GROUP_TYPE_SET(flags, val) \
-                             do {((flags) |= \
-                             (((val) & (SBP_GROUP_META_SOLUTION_GROUP_TYPE_MASK)) \
-                             << (SBP_GROUP_META_SOLUTION_GROUP_TYPE_SHIFT)));} while(0)
-                             
-
-#define SBP_GROUP_META_SOLUTION_GROUP_TYPE_NONE (0)
-#define SBP_GROUP_META_SOLUTION_GROUP_TYPE_GNSS_ONLY (1)
-#define SBP_GROUP_META_SOLUTION_GROUP_TYPE_GNSSINS (2)
-
-typedef struct SBP_ATTR_PACKED {
-  u8 group_id;        /**< Id of the Msgs Group, 0 is Unknown, 1 is Bestpos, 2 is Gnss */
-  u8 flags;           /**< Status flags (reserved) */
-  u8 n_group_msgs;    /**< Size of list group_msgs */
-  u16 group_msgs[0];   /**< An inorder list of message types included in the Solution Group,
-including GROUP_META itself
- */
-} msg_group_meta_t;
 
 
 /** \} */
